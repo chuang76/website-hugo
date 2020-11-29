@@ -1,0 +1,15 @@
+baseurl = "https://chuang76.github.io/"
+title = "Before Dawn"
+author = "Yi-Chin Chuang"
+canonifyurls = true
+languagecode = "en"
+theme = "black-and-light"
+
+pygmentsstyle       = "bw"
+pygmentscodefences  = true
+
+[params]
+  sitename = "Before Dawn"
+  disableWebFonts = false
+
+
