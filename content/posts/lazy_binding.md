@@ -1,5 +1,5 @@
 ---
-title: "Notes: lazy binding"
+title: "Notes: Lazy binding"
 date: 2020-12-02T12:08:22+08:00
 draft: false
 ---
