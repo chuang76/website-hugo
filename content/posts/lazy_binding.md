@@ -1,5 +1,5 @@
 ---
-title: "Notes: Lazy binding"
+title: "Lazy binding"
 date: 2020-12-02T12:08:22+08:00
 draft: false
 ---
@@ -30,7 +30,7 @@ During the investigation of the ELF format, I found out that I was not familiar 
 
 ## Experiment 
 
-Let's start with a simple example called p1.c. 
+The experiment is on an x86 Linux platform. Let's start with a simple example called p1.c. 
 
 ```c
 #include <stdio.h>
@@ -107,6 +107,7 @@ Wait, what do the values pointed by 0x404008 and 0x404010? Let's check it. The f
 ```
 gdb-peda$ x/g 0x404008
 0x404008:       0x00007ffff7ffe180
+
 gdb-peda$ x/g 0x404010
 0x404010:       0x00007ffff7fe8510
 ```

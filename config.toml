@@ -12,4 +12,10 @@ pygmentscodefences  = true
   sitename = "Before Dawn"
   disableWebFonts = false
 
+[[menu.main]]
+    name = "About"
+    url  = "https://chuang76.github.io/posts/about/"
+[[menu.main]]
+    name = "Project"
+    url  = "https://github.com/chuang76"
 
