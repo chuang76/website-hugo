@@ -24,7 +24,7 @@ During the investigation of the ELF format, I found out that I was not familiar 
 
    Global offset table (GOT) is a table which contains absolute addresses of external symbols. GOT is represented as .got and .got.plt sections in an ELF file. A program can look up its GOT and extract the absolute value, then redirect the position-independent reference to the absolute location. The relocation entries (i.e., symbol to absolute address) in GOT are filled by the linker. 
 
-   Procedure linkage table (PLT) is used to look up the addresses in GOT, and it is represented as .plt section in an ELF file. However, you probably would ask that why do we need PLT? It seems to be roundabout, but actually, it is necessary under a dynamic linked situation. The reason is at *compile* time, we have no idea about the absolute addresses of symbols.  So we need PLT as a stub to make an indirect jump. In this way, the original function calls can be unmodified. At runtime, the dynamic linker (ld.so) will be responsible for updating correct addresses. 
+   Procedure linkage table (PLT) is used to look up the addresses in GOT, and it is represented as .plt section in an ELF file. However, you probably would ask that why do we need PLT? It seems to be roundabout, but actually, it is necessary under a dynamic linked situation. The reason is at *compile* time, we have no idea about the absolute addresses of symbols.  So we need PLT as a stub to make an indirect jump. In this way, the original function calls can be unmodified. At runtime, the dynamic linker/loader (ld.so) will be responsible for updating correct addresses. 
 
    
 
@@ -86,7 +86,7 @@ gdb-peda$ x/i $pc
 => 0x401030 <puts@plt>: jmp    QWORD PTR [rip+0x2fe2]        # 0x404018 <puts@got.plt>
 ```
 
-But the interesting thing is, the next instruction does nothing about GOT. Why? The reason is this is our first time to call puts function and our program adopts *lazy binding*. Hence, before resolving the reference, we can not obtain the actual address of puts function. So it goes back to .plt section. A slot number (0x0) is pushed onto the stack. It is a parameter for the resolution later.
+But the interesting thing is, the next instruction does nothing about GOT. Why? The reason is this is our first time to call puts function and our program adopts *lazy binding*. Hence, before resolving the reference, we can not obtain the actual address of puts function. So it goes back to .plt section. A slot number (0x0) is pushed onto the stack. It is a parameter used for resolving reference later.
 
 ```
 gdb-peda$ x/2i $pc
@@ -127,7 +127,7 @@ Start              End                Perm      Name
 0x00007ffffffde000 0x00007ffffffff000 rw-p      [stack]
 ```
 
-Actually, its name is `_dl_runtime_resolve_xsave`.  `_dl_runtime_resolve_xsave` is a function served for the resolution. Basically, this function will use the parameters which we mentioned above to look up the symbol name "puts\0", use this string to find the actual address of puts function in the libraries (libc), then update the address in the GOT (.got.plt) entry. 
+Actually, its name is `_dl_runtime_resolve_xsave`.  `_dl_runtime_resolve_xsave` is a function served for resolving reference. Basically, this function will use the parameters which we mentioned above to look up the symbol name "puts\0", use this string to find the actual address of puts function in the libraries (libc), then update the address in the GOT (.got.plt) entry. 
 
 ```
 gdb-peda$ x/3i $pc
