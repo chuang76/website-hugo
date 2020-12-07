@@ -1,10 +1,10 @@
 ---
-title: "Writeup: payload"
+title: "Walkthrough: payload"
 date: 2020-12-04T14:47:55+08:00
 draft: false
 ---
 
-This is an exercise from the book: *Practical Binary Analysis* chapter 5. You can download it on the official [website](https://practicalbinaryanalysis.com/).  
+This is an example from the book: *Practical Binary Analysis* chapter 5. You can download it on the official [website](https://practicalbinaryanalysis.com/).  
 
 First, we can use file command to determine the type of payload. As you can see, it is a file which contains ASCII text. Subsequently, further view the contents with cat command. 
 
