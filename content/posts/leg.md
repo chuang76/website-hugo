@@ -152,7 +152,11 @@ Congratz!
 My daddy has a lot of ARMv5te muscle!
 ```
 
+<br>
 
+## Reference
+
+ARM Instruction Set. [[link]](https://iitd-plos.github.io/col718/ref/arm-instructionset.pdf)
 
 
 
