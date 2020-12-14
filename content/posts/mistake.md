@@ -13,11 +13,11 @@ if (fd = open("/home/mistake/password", O_RDONLY, 0400) < 0) {
 }
 ```
 
-The priority of the assignment operator (=) is less than the relation operator (<). Since opening a file called password is successful, the return value is nonnegative. Hence, the value of fd is 1. 
+The priority of the assignment operator (=) is less than the relation operator (<). Since opening a file called password is successful, the return value is nonnegative. Hence, the value of fd is false (i.e., 0). 
 
-Subsequently, the program reads the contents of fd (1 means stdin), and stores the contents into a buffer called pw_buf1. Besides, another buffer called pw_buf2 is provided for the user to enter arbitrary values. The contents of pw_buf2 then are applied to XOR encryption. Finally, if the encrypted pw_buf2 is equal to pw_buf1, we can view the executable flag. 
+Subsequently, the program reads the contents pointed by the file descriptor fd (0 means stdin), and stores the contents into a buffer called pw_buf1. Besides, another buffer called pw_buf2 is provided for the user to enter arbitrary values. The contents of pw_buf2 then are applied to XOR encryption. Finally, if the encrypted pw_buf2 is equal to pw_buf1, we can view contents of an executable flag. 
 
-Now, since we can control both pw_buf1 and pw_buf2, it is simple to capture the flag. Let's write a simple program called p1.c to figure out what values should be entered. 
+Now, since we can control both pw_buf1 and pw_buf2, it is easy to capture the flag. Let's write a simple program called p1.c to figure out what values should be entered. 
 
 ```
 #include <stdio.h>
@@ -42,7 +42,7 @@ int main(int argc, char** argv)
 }
 ```
 
-If we enter 0123456789 as pw, its (XOR) encrypted value is 1032547698. Hence, we should enter 1032547698 as pw_buf1, and 0123456789 as pw_buf2. 
+If we enter 0123456789 as pw, its encrypted value is 1032547698. Hence, we should enter 1032547698 as pw_buf1, and 0123456789 as pw_buf2. 
 
 ```
 0123456789
