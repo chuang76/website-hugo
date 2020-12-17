@@ -35,7 +35,7 @@ int main(){
 
 Originally, the permission of the executable shellshock is `r-xr-sr-x`, that is, our permission (other) is r-x. The function setresuid() is used to set the real, effective, and saved user ID; setresuid() has analogous function that set the real, effective, and saved group ID. Since shellshock belongs to the group shellshock_pwn, after executing the setresuid and setresgid function, we are able to own the same permission as group shellshcok_pwn.
 
-[Shellshock](https://en.wikipedia.org/wiki/Shellshock_(software_bug)) is a vulnerability in the Bash shell, it is first published in 2014. According to the report [CVE-2014-6271](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2014-6271), attackers can exploit it with a crafted environment variable. The problem is about parse logic, it is located in [variables.c](http://git.savannah.gnu.org/cgit/bash.git/tree/variables.c?id=ac50fbac377e32b98d2de396f016ea81e8ee9961#n315). Here is the part of source code. 
+[Shellshock](https://en.wikipedia.org/wiki/Shellshock_(software_bug)) is a vulnerability in the Bash shell, it is first published in 2014. According to the report [CVE-2014-6271](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2014-6271), attackers can exploit it with a crafted environment variable. The bug is about parse logic, it is located in [variables.c](http://git.savannah.gnu.org/cgit/bash.git/tree/variables.c?id=ac50fbac377e32b98d2de396f016ea81e8ee9961#n315). Here is the part of source code. 
 
 ```
 void initialize_shell_variables (env, privmode)
@@ -54,7 +54,7 @@ void initialize_shell_variables (env, privmode)
                 parse_and_execute (temp_string, name, SEVAL_NONINT|SEVAL_NOHIST);
 ```
 
-As you can see, STREQN ("() {", string, 4) means the program check whether the first 4-byte of the string is "() {" or not. If the string starts at "() {", the shell program will regard it as an environment variable. However, it may cause a security problem since more general strings are allowed to be executed. 
+As you can see, STREQN ("() {", string, 4) means the program check whether the first 4-byte of the string is "() {" or not. If the string starts at "() {", the shell program will treat it as an environment variable. However, it may cause a security problem since more general strings are allowed to be executed. 
 
 For example, the string can contain two commands which are separated by a semicolon (;) symbol, then both the commands will be executed. 
 
