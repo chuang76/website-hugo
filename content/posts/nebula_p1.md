@@ -21,9 +21,6 @@ account. You could also find this by carefully looking in top level directories 
 Alternatively, look at the find man page.
 
 To access this level, log in as level00 with the password of level00.
-
-Source code
-There is no source code available for this level
 ```
 
 According to the hint, we need to find a program which can run as the "flag00". Basically, "find" is used to search for files in a directory hierarchy. Unix systems also provide the flag `-perm` to find the file based on its permission. 
