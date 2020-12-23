@@ -20,10 +20,6 @@ To do this level, log in as the level10 account with the password level10.
 Files for this level can be found in /home/flag10.
 ```
 
-Here is the contents of /home/flag10. 
-
-[10-1]
-
 The source code is available. 
 
 ```
@@ -102,7 +98,30 @@ int main(int argc, char **argv)
 }
 ```
 
+<br>
 
+## Solution 1
 
+In this challenge, Nebula left a sensitive file "x" in /home/level10. 
 
+![](https://github.com/chuang76/image/blob/master/10-2.PNG?raw=true)
 
+It contains ASCII text. Though it shows nothing when we type in cat command (since the file may contain too many blank lines), we can use od command to view the contents of x instead. 
+
+![](https://github.com/chuang76/image/blob/master/10-3.PNG?raw=true)
+
+As you can see, it shows 615a2ce1-b2b5-4c76-8eed-8aa5c4015c27. This strange token may be the password. Let's give it a try. 
+
+![](https://github.com/chuang76/image/blob/master/10-4.PNG?raw=true)
+
+Here is the flag. 
+
+![](https://github.com/chuang76/image/blob/master/10-5.PNG?raw=true)
+
+<br>
+
+## Solution 2
+
+Let's go back to the directory /home/flag10. Here is its contents. 
+
+![](https://github.com/chuang76/image/blob/master/10-1.PNG?raw=true)

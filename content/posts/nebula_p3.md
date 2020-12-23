@@ -125,7 +125,7 @@ Here is the contents of the directory /home/flag08. [Tcpdump](https://en.wikiped
 
 ![](https://github.com/chuang76/image/blob/master/08-1.PNG?raw=true)
 
-If you view the contents of .pcap file with cat command directly, it is not readable. Instead, we can use tcpdump -r to view the contents.  
+The file capture.pcap is not human-readable if we try to view its contents with cat command. Instead, we should use tcpdump -r to view the contents.  
 
 ![](https://github.com/chuang76/image/blob/master/08-2.PNG?raw=true)
 
@@ -157,7 +157,7 @@ Let's move on. We need to figure out what is the actual password. We can start a
 
 ![](https://github.com/chuang76/image/blob/master/08-8.PNG?raw=true)
 
-Then, we can focus on what character is transfer from 59.233.235.218 (the user who types the password) to 59.233.235.223. The characters that ends at carriage return (0x0d) can be collected as follows. 
+Then, we can focus on what character is transfer from 59.233.235.218 (the user who types the password) to 59.233.235.223. In the Windows system, the key Enter is represented as carriage return (CR, 0x0d) and line feed (LF, 0x0a). The characters that ends at 0x0d and 0x0a can be collected as follows. 
 
 ```
 'b', 'a', 'c', 'k', 'd', 'o', 'o', 'r', 0x7f, 0x7f, 0x7f, '0', '0', 'R', 'm', '8', 0x7f, 'a', 't', 'e'
