@@ -48,7 +48,7 @@ Let's go back to the directory /home/flag10. Here is its contents.
 
 ![](https://github.com/chuang76/image/blob/master/10-1.PNG?raw=true)
 
-The source code of the executable flag10 is available. The program is going to check the file permission, connect to the port 18211, then read something from the port, and write the data to the buffer.
+The source code of the executable flag10 is available. The program is going to check the file permission, create a socket, connect to the port 18211, then read something from the file, and write (send) the data to the socket.
 
 ```
 #include <stdlib.h>
@@ -138,7 +138,7 @@ However, it's failed. The error message indicates that I don't have access to th
 
 ## The second attempt
 
-Let's view the source code again. The program is a classical [time-of-check to time-of-use](https://en.wikipedia.org/wiki/Time-of-check_to_time-of-use) (TOCTOU), which is a software bug caused by the race condition. Though we don't have the ability to change the internal memory of the program, we can exploit the race condition to trick the Set-UID. That is, after passing the verification, and before opening the file, we make the file points to our target file /home/flag10/token. Since modern processors run billions of instructions per second, the duration (TOCTOW window) is very short, we need to try it repeatedly. To win the race condition, we can design the workflow as follows. 
+Let's view the source code again. The program is a classical [time-of-check to time-of-use](https://en.wikipedia.org/wiki/Time-of-check_to_time-of-use) (TOCTOU), which is a software bug caused by the race condition. Though we don't have the ability to change the internal memory of the program, we can exploit the race condition to trick the Set-UID. That is, after passing the verification, and before opening the file, we make the file points to our target file /home/flag10/token. Since modern processors run billions of instructions per second, the duration (TOCTOU window) is very short, we need to try it repeatedly. To win the race condition, we can design the workflow as follows. 
 
 ```
 1. TTY1: used to keep listening to the port 18211
