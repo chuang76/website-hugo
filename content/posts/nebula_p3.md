@@ -121,7 +121,7 @@ To do this level, log in as the level08 account with the password level08.
 Files for this level can be found in /home/flag08.
 ```
 
-Here is the contents of the directory /home/flag08. [Tcpdump](https://en.wikipedia.org/wiki/Tcpdump) is a free tool that allows uses to capture packets. As you can see, capture.pcap is a tcpdump capture file. It is a file that contains packet information. 
+Here is the contents of the directory /home/flag08. [Tcpdump](https://en.wikipedia.org/wiki/Tcpdump) is a free tool that allows users to capture packets. As you can see, capture.pcap is a tcpdump capture file. It is a file that contains packet information. 
 
 ![](https://github.com/chuang76/image/blob/master/08-1.PNG?raw=true)
 
@@ -131,7 +131,7 @@ The file capture.pcap is not human-readable if we try to view its contents with 
 
 ![](https://github.com/chuang76/image/blob/master/08-3.PNG?raw=true)
 
-Next, we are going to analyze these packet information. We can use [Wireshark](https://en.wikipedia.org/wiki/Wireshark), a powerful packet analyzer, to analyze the file. However, since we don't have the permission to install the tool, we are not able to use Wireshark on Nebula. So let's transfer the captured file to our personal machine (e.g. in my case is Kali Linux), then analyze the file on our personal machine.  
+Next, we are going to analyze these packet information. We can use [Wireshark](https://en.wikipedia.org/wiki/Wireshark), a powerful packet analyzer, to analyze the file. Since we don't have the permission to install the tool, we are not able to use Wireshark on Nebula. So let's transfer the captured file to our personal machine (e.g. in my case is Kali Linux), then analyze the file on our personal machine.  
 
 If you are not familiar that how to make two virtual machines communication, you can check this [video](https://www.youtube.com/watch?v=vReAkOq-59I). After setting up the network, we can use [netcat](https://en.wikipedia.org/wiki/Netcat) (nc) command to transfer the file as follows. That is, the machine is running nc in listening mode on port 9527.
 
