@@ -1,55 +1,108 @@
 ---
-title: "Writeup: Nebula (level 5)"
-date: 2020-12-18T15:34:59+08:00
-draft: false
+title: "Writeup: Nebula (level 10)"
+date: 2020-12-22T14:36:26+08:00
+draft: true
 ---
 
 Nebula is a virtual machine that covers a variety of challenges about Linux privilege escalation, scripting language issues, and file system race conditions. It is available at [Exploit Exercises](https://exploit-exercises.lains.space/).
 
 <br>
 
-## Level 5
+## Level 10
 
-The description of Level 5 is provided as follows.
-
-```
-Check the flag05 home directory. You are looking for weak directory permissions
-
-To do this level, log in as the level05 account with the password level05. 
-Files for this level can be found in /home/flag05.
-```
-
-We first check the contents in the directory /home/flag05. 
-
-![](https://github.com/chuang76/image/blob/master/05-1.PNG?raw=true)
-
-There is a compressed file in the directory .backup. Let's try to uncompress it. However, the error message indicates that we don't have the permission. 
-
-![](https://github.com/chuang76/image/blob/master/05-2.PNG?raw=true)
-
-To get rid of the permission issue, let's copy this file into /tmp directory. 
-
-![](https://github.com/chuang76/image/blob/master/05-3.PNG?raw=true)
-
-Now, we are able to uncompress the compressed file with tar command. 
-
-![](https://github.com/chuang76/image/blob/master/05-4.PNG?raw=true)
-
-After uncompressing the file, we obtain the public key, which helps us to log into a remotely as account flag05. [SSH](https://en.wikipedia.org/wiki/SSH_(Secure_Shell)) (Secure shell) is a cryptographic network protocol. It provides users to control the remote servers over the Internet, such as login, remote command-line, to name a few. 
-
-Since SSH uses [public-key cryptography](https://en.wikipedia.org/wiki/Public-key_cryptography) to authenticate and now we have the public key, we are allowed to log in remotely as the account flag05 without any passwords. Let's try it via ssh command. 
+The description of Level 10 is provided as follows. 
 
 ```
-$ ssh flag05@localhost
+The setuid binary at /home/flag10/flag10 binary will upload any file given, 
+as long as it meets the requirements of the access() system call.
+
+To do this level, log in as the level10 account with the password level10. 
+Files for this level can be found in /home/flag10.
 ```
 
-As you can see, we log in as the account flag05. 
+Here is the contents of /home/flag10. 
 
-![](https://github.com/chuang76/image/blob/master/05-5.PNG?raw=true)
+[10-1]
 
-Here is the flag. 
+The source code is available. 
 
-![](https://github.com/chuang76/image/blob/master/05-6.PNG?raw=true)
+```
+#include <stdlib.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <stdio.h>
+#include <fcntl.h>
+#include <errno.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <string.h>
+
+int main(int argc, char **argv)
+{
+  char *file;
+  char *host;
+
+  if(argc < 3) {
+      printf("%s file host\n\tsends file to host if you have access to it\n", argv[0]);
+      exit(1);
+  }
+
+  file = argv[1];
+  host = argv[2];
+
+  if(access(argv[1], R_OK) == 0) {
+      int fd;
+      int ffd;
+      int rc;
+      struct sockaddr_in sin;
+      char buffer[4096];
+
+      printf("Connecting to %s:18211 .. ", host); fflush(stdout);
+
+      fd = socket(AF_INET, SOCK_STREAM, 0);
+
+      memset(&sin, 0, sizeof(struct sockaddr_in));
+      sin.sin_family = AF_INET;
+      sin.sin_addr.s_addr = inet_addr(host);
+      sin.sin_port = htons(18211);
+
+      if(connect(fd, (void *)&sin, sizeof(struct sockaddr_in)) == -1) {
+          printf("Unable to connect to host %s\n", host);
+          exit(EXIT_FAILURE);
+      }
+
+#define HITHERE ".oO Oo.\n"
+      if(write(fd, HITHERE, strlen(HITHERE)) == -1) {
+          printf("Unable to write banner to host %s\n", host);
+          exit(EXIT_FAILURE);
+      }
+#undef HITHERE
+
+      printf("Connected!\nSending file .. "); fflush(stdout);
+
+      ffd = open(file, O_RDONLY);
+      if(ffd == -1) {
+          printf("Damn. Unable to open file\n");
+          exit(EXIT_FAILURE);
+      }
+
+      rc = read(ffd, buffer, sizeof(buffer));
+      if(rc == -1) {
+          printf("Unable to read from file: %s\n", strerror(errno));
+          exit(EXIT_FAILURE);
+      }
+
+      write(fd, buffer, rc);
+
+      printf("wrote file!\n");
+
+  } else {
+      printf("You don't have access to %s\n", file);
+  }
+}
+```
+
+
 
 
 

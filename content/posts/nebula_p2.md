@@ -1,5 +1,5 @@
 ---
-title: "Writeup: Nebula (level 3)"
+title: "Writeup: Nebula (level 3 - level 5)"
 date: 2020-12-18T12:06:53+08:00
 draft: false
 ---
@@ -80,4 +80,123 @@ After a couple of minutes, cron runs the jobs (include shell scripts) in the sys
 Now, let's run this exploit executable to control the bash of the account flag03. 
 
 ![](https://github.com/chuang76/image/blob/master/03-5.PNG?raw=true)
+
+<br>
+
+## Level 4
+
+The description of Level 4 is provided as follows.
+
+```
+This level requires you to read the token file, but the code restricts the files 
+that can be read. Find a way to bypass it :)
+
+To do this level, log in as the level04 account with the password level04. 
+Files for this level can be found in /home/flag04.
+```
+
+The source code is available. 
+
+```
+#include <stdlib.h>
+#include <unistd.h>
+#include <string.h>
+#include <sys/types.h>
+#include <stdio.h>
+#include <fcntl.h>
+
+int main(int argc, char **argv, char **envp)
+{
+      char buf[1024];
+      int fd, rc;
+
+      if(argc == 1) {
+          printf("%s [file to read]\n", argv[0]);
+          exit(EXIT_FAILURE);
+      }
+
+      if(strstr(argv[1], "token") != NULL) {
+          printf("You may not access '%s'\n", argv[1]);
+          exit(EXIT_FAILURE);
+      }
+
+      fd = open(argv[1], O_RDONLY);
+      if(fd == -1) {
+          err(EXIT_FAILURE, "Unable to open %s", argv[1]);
+      }
+
+      rc = read(fd, buf, sizeof(buf));
+
+      if(rc == -1) {
+          err(EXIT_FAILURE, "Unable to read fd %d", fd);
+      }
+
+      write(1, buf, rc);
+}
+```
+
+According to the source code, if we use "token" as the argument of flag04, we'll get the error message: You may not access token. However, we can perform an indirect way to view the contents of a restricted file. That is, create a symbolic link of the file token. 
+
+```
+$ ln -s [target] [target_symbolic]
+```
+
+![](https://github.com/chuang76/image/blob/master/04-1.PNG?raw=true)
+
+After we have made the symbolic link, we can execute target_symbolic file, just as we could with the target file. Now, we can read the contents of token as follows. 
+
+![](https://github.com/chuang76/image/blob/master/04-2.PNG?raw=true)
+
+Use the token as the password of account flag04, then we can get the flag. 
+
+![](https://github.com/chuang76/image/blob/master/04-3.PNG?raw=true)
+
+<br>
+
+## Level 5
+
+The description of Level 5 is provided as follows.
+
+```
+Check the flag05 home directory. You are looking for weak directory permissions
+
+To do this level, log in as the level05 account with the password level05. 
+Files for this level can be found in /home/flag05.
+```
+
+We first check the contents in the directory /home/flag05. 
+
+![](https://github.com/chuang76/image/blob/master/05-1.PNG?raw=true)
+
+There is a compressed file in the directory .backup. Let's try to uncompress it. However, the error message indicates that we don't have the permission. 
+
+![](https://github.com/chuang76/image/blob/master/05-2.PNG?raw=true)
+
+To get rid of the permission issue, let's copy this file into /tmp directory. 
+
+![](https://github.com/chuang76/image/blob/master/05-3.PNG?raw=true)
+
+Now, we are able to uncompress the compressed file with tar command. 
+
+![](https://github.com/chuang76/image/blob/master/05-4.PNG?raw=true)
+
+After uncompressing the file, we obtain the public key, which helps us to log into a remotely as account flag05. [SSH](https://en.wikipedia.org/wiki/SSH_(Secure_Shell)) (Secure shell) is a cryptographic network protocol. It provides users to control the remote servers over the Internet, such as login, remote command-line, to name a few. 
+
+Since SSH uses [public-key cryptography](https://en.wikipedia.org/wiki/Public-key_cryptography) to authenticate and now we have the public key, we are allowed to log in remotely as the account flag05 without any passwords. Let's try it via ssh command. 
+
+```
+$ ssh flag05@localhost
+```
+
+As you can see, we log in as the account flag05. 
+
+![](https://github.com/chuang76/image/blob/master/05-5.PNG?raw=true)
+
+Here is the flag. 
+
+![](https://github.com/chuang76/image/blob/master/05-6.PNG?raw=true)
+
+
+
+
 
