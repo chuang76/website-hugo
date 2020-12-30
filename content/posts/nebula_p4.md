@@ -1,5 +1,5 @@
 ---
-title: "Writeup: Nebula (level 10)"
+title: "Writeup: nebula (level 10)"
 date: 2020-12-22T14:36:26+08:00
 draft: false
 ---
