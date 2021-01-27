@@ -1,7 +1,7 @@
 ---
-title: "Writeup: protostar (stack 0 - stack 4)"
+title: "Writeup: protostar (stack)"
 date: 2020-12-30T21:12:45+08:00
-draft: false
+draft: true
 ---
 
 Protostar is a virtual machine which introduces the following in a friendly way: network programming, byte order, handling sockets, stack overflows, format strings, and heap overflows. It is available at [VulnHub](https://www.vulnhub.com/). 
@@ -133,7 +133,7 @@ int main(int argc, char **argv)
 }
 ```
 
-Since the value of buffer is copied from the environment variable which we can control, let's exploit the program with the environment variable GREENIE. Similarly, the value of modified should be overwritten as \x0a\x0d\x0a\x0d. 
+Since the value of buffer is copied from the environment variable which we can control, let's exploit the program with the environment variable GREENIE. Again, the value of modified should be overwritten in little-endian format. 
 
 ```
 $ GREENIE=`python -c "print('a' * 64 + '\x0a\x0d\x0a\x0d')"` ./stack2
@@ -159,7 +159,7 @@ The source code is available as follows.
 
 void win()
 {
-	printf("code flow successfully changed\n");
+    printf("code flow successfully changed\n");
 }
 
 int main(int argc, char **argv)
@@ -212,7 +212,7 @@ The source code is available as follows.
 
 void win()
 {
-	printf("code flow successfully changed\n");
+    printf("code flow successfully changed\n");
 }
 
 int main(int argc, char **argv)
@@ -230,7 +230,7 @@ Next, let's figure out how many bytes should be covered before the return addres
 
 ![](https://github.com/chuang76/image/blob/master/protostar/p4-6.PNG?raw=true)
 
-As you can see, eax is stored as the start address of buffer (0xbffffca0) while current ebp is stored as (0xbffffce8). So we need to cover 0xbffffce8 - 0xbffffca0 + 4 (the size of ebp) = 76 bytes. 
+As you can see, eax is stored as the start address of buffer (0xbffffca0) while current ebp is stored as 0xbffffce8. So we need to cover 0xbffffce8 - 0xbffffca0 + 4 (the size of ebp) = 76 bytes. 
 
 ![](https://github.com/chuang76/image/blob/master/protostar/p4-7.PNG?raw=true)
 
