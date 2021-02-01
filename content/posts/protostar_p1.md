@@ -1,5 +1,5 @@
 ---
-title: "Writeup: protostar (stack)"
+title: "Writeup: protostar (stack 0 - stack 4)"
 date: 2020-12-30T21:12:45+08:00
 draft: true
 ---
