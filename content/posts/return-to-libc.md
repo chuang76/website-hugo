@@ -143,10 +143,10 @@ with open("badfile", "wb") as f:
 
 So we can get the root privilege of the shell. 
 
-![](https://github.com/chuang76/image/blob/master/ch3-12.PNG?raw=true)
+![](https://github.com/chuang76/image/blob/master/ch3-18.PNG?raw=true)
 
 
 
 ## Reference
 
-- Programs, Processes and Memory [[link]](https://www.usna.edu/Users/cs/wcbrown/courses/IC221/classes/L08/Class.html)
+1. Programs, Processes and Memory [[link]](https://www.usna.edu/Users/cs/wcbrown/courses/IC221/classes/L08/Class.html)
