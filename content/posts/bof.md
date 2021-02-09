@@ -1,5 +1,5 @@
 ---
-title: "Buffer overflow attack"
+title: "Stack Buffer Overflow"
 date: 2021-01-31T14:47:41+08:00
 draft: false
 ---

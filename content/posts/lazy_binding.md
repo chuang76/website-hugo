@@ -1,5 +1,5 @@
 ---
-title: "Lazy binding"
+title: "Lazy Binding"
 date: 2020-12-02T12:08:22+08:00
 draft: false
 ---
@@ -32,7 +32,7 @@ During the investigation of the ELF format, I found out that I was not familiar 
 
 The experiment is on an x86 Linux platform. Let's start with a simple example called p1.c. 
 
-```c
+```
 #include <stdio.h>
 
 int main(int argc, char** argv)
@@ -127,7 +127,7 @@ Start              End                Perm      Name
 0x00007ffffffde000 0x00007ffffffff000 rw-p      [stack]
 ```
 
-Actually, its name is `_dl_runtime_resolve_xsave`.  `_dl_runtime_resolve_xsave` is a function served for resolving reference. Basically, this function will use the parameters which we mentioned above to look up the symbol name "puts\0", use this string to find the actual address of puts function in the libraries (libc), then update the address in the GOT (.got.plt) entry. 
+Actually, it is _dl_runtime_resolve_xsave(), which is a function served for resolving reference. Basically, this function will use the parameters which we mentioned above to look up the symbol name "puts\0", use this string to find the actual address of puts function in the libraries (libc), then update the address in the GOT (.got.plt) entry. 
 
 ```
 gdb-peda$ x/3i $pc
