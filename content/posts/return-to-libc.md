@@ -118,7 +118,9 @@ Set a breakpoint at main function and run the program. We can find the address o
 
 ## Payload
 
-Run the vulnerable program to find out where should we put the address of system(). That is, the value of ebp - the address of buffer + the size of ebp register =  0xffffd4d8 - 0xffffd4c0 + 4 = 28. 
+Run the vulnerable program to find out where should we put the address of system(). That is, the value of ebp - the address of buffer + the size of ebp register =  0xffffd4d8 - 0xffffd4c0 + 4 = 28. So our crafted stack frame should looks like this:
+
+![](https://github.com/chuang76/image/blob/master/ch3-19.PNG?raw=true)
 
 Here is our payload: replace the return address of strcmp()'s frame as the address of system() and put the argument of system(), i.e., the address of the string "/bin/sh". Note that it is necessary to fill the return address of system()'s frame with the address of exit(), or the program will crash. 
 
