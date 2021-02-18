@@ -116,7 +116,7 @@ Set a breakpoint at main function and run the program. We can find the address o
 
 
 
-## Payload
+## Exploit
 
 Run the vulnerable program to find out where should we put the address of system(). That is, the value of ebp - the address of buffer + the size of ebp register =  0xffffd4d8 - 0xffffd4c0 + 4 = 28. So our crafted stack frame should looks like this:
 

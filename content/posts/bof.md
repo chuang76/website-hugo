@@ -103,7 +103,7 @@ Use gdb debugger to figure out the distance between the buffer and return addres
 
 
 
-## Payload
+## Exploit
 
 The shellcode in the following exploit program aims to execute "/bin/sh". We can use NOP-sled as a strategy to hit the start of our shellcode. NOP (0x90) means do nothing in the CPU instruction, so we can just slide in the buffer until reach the shellcode. Note that `ret` is 0xffffd2a8 plus some number. That is because the gdb pushes some environment data into the stack before running the program. Since the stack grows downwards in x86 processors, the actual frame pointer without debugging mode will be larger than 0xffffd2a8. 
 
@@ -141,9 +141,7 @@ with open('badfile', 'wb') as f:
     f.write(content)
 ```
 
-
-
-## Launch the attack
+So we can launch an attack. 
 
 ```
 $ rm badfile
