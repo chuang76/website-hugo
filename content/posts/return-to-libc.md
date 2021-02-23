@@ -70,11 +70,11 @@ $ sudo chmod 4755 retlib
 
 ## Idea
 
-The idea of the return-to-libc attack is to jump into a function in the library (for example, libc) without running the instruction located in the stack. To get the root privilege of the shell, our goal is to invoke system("/bin/sh"). So the first thing is to find out where is the function system(). We can use gdb debugger to print out the address of the system() as follows. 
+The idea of the return-to-libc attack is to jump into a function in the library (for example, libc) without running the instruction located in the stack. To get the root privilege of the shell, our goal is to invoke system("/bin/sh") in the libc. So the first thing is to specify where is the function system(). We can use gdb debugger to print out the address of the system() as follows. 
 
 ![](https://github.com/chuang76/image/blob/master/ch3-13.PNG?raw=true)
 
-Next, we need to figure out where is the string "/bin/sh". One method is to use an environment variable. The reason is that when we execute a program from a shell prompt, the shell actually fork itself and creates a child process to run the program. All the exported environment variables will be *inherited* by the child process. So we can export a self-defined environment variable called "my_shell" which value equals to "/bin/sh" and use a simple program called "prtenv.c" to print out the address. 
+Next, we need to find out where is the string "/bin/sh". One method is to use an environment variable. The reason is that when we execute a program from a shell prompt, the shell actually fork itself and creates a child process to run the program. All the exported environment variables will be *inherited* by the child process. So we can export a self-defined environment variable called "my_shell" which value equals to "/bin/sh", and use a simple program called "prtenv.c" to print out the address. 
 
 ```
 #include <stdio.h>
